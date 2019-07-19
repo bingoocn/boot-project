@@ -19,7 +19,7 @@
         <dependencies>
             <dependency>
                 <groupId>com.cngc.boot</groupId>
-                <artifactId>integration-r1-portal</artifactId>
+                <artifactId>boot-integration-r1-portal</artifactId>
                 <version>${revision}</version>
             </dependency>
             <dependency>
