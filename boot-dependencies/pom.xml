@@ -6,7 +6,7 @@
     <parent>
         <artifactId>boot-project</artifactId>
         <groupId>com.cngc.boot</groupId>
-        <version>${revision}</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>boot-dependencies</artifactId>
     <packaging>pom</packaging>
@@ -14,28 +14,34 @@
     <properties>
         <oracle.version>11.2.0.3</oracle.version>
         <r1.version>1.0.0</r1.version>
+        <pversion>1.0.0-SNAPSHOT</pversion>
     </properties>
     <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.cngc.boot</groupId>
                 <artifactId>boot-integration-r1-portal</artifactId>
-                <version>${revision}</version>
+                <version>${pversion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cngc.boot</groupId>
+                <artifactId>integration-r1-portal</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
             </dependency>
             <dependency>
                 <groupId>com.cngc.boot</groupId>
                 <artifactId>boot-starter-web</artifactId>
-                <version>${revision}</version>
+                <version>${pversion}</version>
             </dependency>
             <dependency>
                 <groupId>com.cngc.boot</groupId>
                 <artifactId>boot-basic-core</artifactId>
-                <version>${revision}</version>
+                <version>${pversion}</version>
             </dependency>
             <dependency>
                 <groupId>com.cngc.boot</groupId>
                 <artifactId>boot-basic-web</artifactId>
-                <version>${revision}</version>
+                <version>${pversion}</version>
             </dependency>
             <dependency>
                 <groupId>com.oracle</groupId>

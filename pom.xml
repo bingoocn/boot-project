@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.cngc.boot</groupId>
     <artifactId>boot-project</artifactId>
-    <version>${revision}</version>
+    <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <description>cngc-boot项目,项目基于spring-boot构建</description>
     <properties>
