@@ -46,6 +46,16 @@ public @interface DictTranslator {
      */
     String split() default ",";
 
-    String keyName() default "";
+    /**
+     * 序列化时所用的keyname.
+     * @return keyname
+     */
+    String serializeKeyName() default "";
+
+    /**
+     * 反序列化时所用的keyname.
+     * @return keyname
+     */
+    String deSerializeKeyName() default "";
     
 }

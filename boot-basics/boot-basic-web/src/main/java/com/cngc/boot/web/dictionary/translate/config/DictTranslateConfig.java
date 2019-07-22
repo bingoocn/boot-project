@@ -54,7 +54,7 @@ public class DictTranslateConfig {
      */
     public class DictPropertyNamingStrategy extends PropertyNamingStrategy {
 
-        private final static String KEY_SUFFIX = "code";
+        private final static String KEY_SUFFIX = "Code";
 
         private final Pattern fieldNamePattern = Pattern.compile(KEY_SUFFIX + "$", Pattern.CASE_INSENSITIVE);
 
@@ -73,7 +73,7 @@ public class DictTranslateConfig {
         public String nameForGetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName) {
             String fieldName = Optional.ofNullable(method.getAllAnnotations().get(DictTranslator.class))
                     .map(dict -> {
-                                if (StringUtils.isEmpty(dict.keyName())) {
+                                if (StringUtils.isEmpty(dict.serializeKeyName())) {
                                     try {
                                         PropertyDescriptor[] propertyDescriptors
                                                 = Introspector.getBeanInfo(method.getDeclaringClass()).getPropertyDescriptors();
@@ -84,6 +84,7 @@ public class DictTranslateConfig {
                                                 if (matcher.find()) {
                                                     return name.substring(0, matcher.start());
                                                 }
+                                                return null;
                                             }
                                         }
                                     } catch (Exception e) {
@@ -91,7 +92,7 @@ public class DictTranslateConfig {
                                     }
                                     return null;
                                 } else {
-                                    return dict.keyName();
+                                    return dict.serializeKeyName();
                                 }
                             }
                     )
@@ -110,8 +111,34 @@ public class DictTranslateConfig {
         @Override
         public String nameForSetterMethod(MapperConfig<?> config, AnnotatedMethod method,
                                           String defaultName) {
+            String fieldName = Optional.ofNullable(method.getAllAnnotations().get(DictTranslator.class))
+                    .map(dict -> {
+                                if (StringUtils.isEmpty(dict.deSerializeKeyName())) {
+                                    try {
+                                        PropertyDescriptor[] propertyDescriptors
+                                                = Introspector.getBeanInfo(method.getDeclaringClass()).getPropertyDescriptors();
+                                        for (PropertyDescriptor pd : propertyDescriptors) {
+                                            if (method.getMember().equals(pd.getWriteMethod())) {
+                                                String name = pd.getName();
+                                                Matcher matcher = fieldNamePattern.matcher(name);
+                                                if (matcher.find()) {
+                                                    return name;
+                                                }
+                                                return name + KEY_SUFFIX;
+                                            }
+                                        }
+                                    } catch (Exception e) {
+                                        logger.warn(e.getMessage(), e);
+                                    }
+                                    return null;
+                                } else {
+                                    return dict.deSerializeKeyName();
+                                }
+                            }
+                    )
+                    .orElse(defaultName);
             return Optional.ofNullable(defaultPropertyNamingStrategy).map(strategy
-                    -> strategy.nameForSetterMethod(config, method, defaultName)).orElse(defaultName);
+                    -> strategy.nameForSetterMethod(config, method, fieldName)).orElse(fieldName);
         }
 
         @Override

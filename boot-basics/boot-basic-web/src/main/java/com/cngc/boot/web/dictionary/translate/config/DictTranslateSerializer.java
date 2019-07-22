@@ -1,7 +1,6 @@
 package com.cngc.boot.web.dictionary.translate.config;
 
 import com.cngc.boot.web.dictionary.model.Dictionary;
-import com.cngc.boot.web.dictionary.service.DictTranslateService;
 import com.cngc.boot.web.dictionary.translate.DictTranslator;
 import com.cngc.boot.web.dictionary.util.DictTranslatorServiceProxy;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -10,12 +9,10 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class DictTranslateSerializer extends JsonSerializer<String> implements ContextualSerializer {
 
@@ -41,8 +38,8 @@ public class DictTranslateSerializer extends JsonSerializer<String> implements C
 
     @Override
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
-        DictTranslator dictTranslator = property.getAnnotation(DictTranslator.class);
-        String type = dictTranslator.type() + dictTranslator.value();
+        DictTranslator dictTranslator = AnnotationUtils.synthesizeAnnotation(property.getAnnotation(DictTranslator.class), null);
+        String type = dictTranslator.type();
         if(StringUtils.isEmpty(type)) {
             throw new JsonMappingException("未设置字典类型!");
         }
