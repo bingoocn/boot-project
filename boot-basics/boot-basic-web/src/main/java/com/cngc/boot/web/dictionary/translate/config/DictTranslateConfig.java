@@ -17,6 +17,7 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Field;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -71,6 +72,7 @@ public class DictTranslateConfig {
 
         @Override
         public String nameForGetterMethod(MapperConfig<?> config, AnnotatedMethod method, String defaultName) {
+            AtomicBoolean forceSetting = new AtomicBoolean(false);
             String fieldName = Optional.ofNullable(method.getAllAnnotations().get(DictTranslator.class))
                     .map(dict -> {
                                 if (StringUtils.isEmpty(dict.serializeKeyName())) {
@@ -92,11 +94,15 @@ public class DictTranslateConfig {
                                     }
                                     return null;
                                 } else {
+                                    forceSetting.set(true);
                                     return dict.serializeKeyName();
                                 }
                             }
                     )
                     .orElse(defaultName);
+            if(forceSetting.get()) {
+                return fieldName;
+            }
             return Optional.ofNullable(defaultPropertyNamingStrategy).map(strategy
                     -> strategy.nameForGetterMethod(config, method, fieldName)).orElse(fieldName);
         }
@@ -111,6 +117,7 @@ public class DictTranslateConfig {
         @Override
         public String nameForSetterMethod(MapperConfig<?> config, AnnotatedMethod method,
                                           String defaultName) {
+            AtomicBoolean forceSetting = new AtomicBoolean(false);
             String fieldName = Optional.ofNullable(method.getAllAnnotations().get(DictTranslator.class))
                     .map(dict -> {
                                 if (StringUtils.isEmpty(dict.deSerializeKeyName())) {
@@ -132,11 +139,15 @@ public class DictTranslateConfig {
                                     }
                                     return null;
                                 } else {
+                                    forceSetting.set(true);
                                     return dict.deSerializeKeyName();
                                 }
                             }
                     )
                     .orElse(defaultName);
+            if(forceSetting.get()) {
+                return fieldName;
+            }
             return Optional.ofNullable(defaultPropertyNamingStrategy).map(strategy
                     -> strategy.nameForSetterMethod(config, method, fieldName)).orElse(fieldName);
         }
