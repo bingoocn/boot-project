@@ -15,13 +15,13 @@ public class CngcBootWebMvcConfigurer {
     /**
      * cngc-web所用消息的basename.
      */
-    private final static String CNGC_MESSAGE_BASENAME = "cngcWebMessage";
+    private final static String CNGC_WEB_MESSAGE_BASENAME = "cngcWebMessage";
 
 
     @Bean
-    public CngcResourceBundleMessageSource cngcMessageSource() {
+    public CngcResourceBundleMessageSource cngcWebMessageSource() {
         CngcResourceBundleMessageSource resourceBundleMessageSource = new CngcResourceBundleMessageSource();
-        resourceBundleMessageSource.setBasename(CNGC_MESSAGE_BASENAME);
+        resourceBundleMessageSource.setBasename(CNGC_WEB_MESSAGE_BASENAME);
         return resourceBundleMessageSource;
     }
 }
