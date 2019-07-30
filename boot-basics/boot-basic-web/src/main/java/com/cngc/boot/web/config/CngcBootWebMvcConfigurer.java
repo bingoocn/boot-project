@@ -1,8 +1,10 @@
 package com.cngc.boot.web.config;
 
 import com.cngc.boot.core.CngcResourceBundleMessageSource;
+import com.cngc.boot.web.ServletExceptionHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 
 /**
  * cngc-boot核心配置类.
@@ -10,6 +12,7 @@ import org.springframework.context.annotation.Configuration;
  * @author maxD
  */
 @Configuration
+@Import(ServletExceptionHandler.class)
 public class CngcBootWebMvcConfigurer {
 
     /**
