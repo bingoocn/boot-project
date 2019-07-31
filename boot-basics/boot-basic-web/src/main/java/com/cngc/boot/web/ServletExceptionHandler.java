@@ -2,7 +2,7 @@ package com.cngc.boot.web;
 
 import com.cngc.boot.core.CngcResourceBundleMessageSource;
 import com.cngc.boot.web.constant.WebMessageConstants;
-import com.cngc.boot.web.exception.RequestParameterValidationException;
+import com.cngc.boot.web.exception.RequestBodyValidationException;
 import com.cngc.boot.web.exception.ResourceNotFoundException;
 import lombok.Data;
 import org.slf4j.Logger;
@@ -14,6 +14,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ import java.util.List;
  * @author maxD
  */
 @ControllerAdvice
-public class ServletExceptionHandler {
+public class ServletExceptionHandler extends ResponseEntityExceptionHandler {
 
     private final Logger logger = LoggerFactory.getLogger(ServletExceptionHandler.class);
 
@@ -52,8 +53,8 @@ public class ServletExceptionHandler {
      * @return 响应体
      * TODO 处理error中的code与attribution
      */
-    @ExceptionHandler(RequestParameterValidationException.class)
-    public ResponseEntity<RequestParameterErrorMessage> handle(RequestParameterValidationException exception) {
+    @ExceptionHandler(RequestBodyValidationException.class)
+    public ResponseEntity<RequestParameterErrorMessage> handle(RequestBodyValidationException exception) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY.value())
                 .body(new RequestParameterErrorMessage(cngcWebMessageSource.getMessage(
                         WebMessageConstants.ERROR_DEFAULT_PARAMETER_VALIDATION), exception.getFieldErrors()));

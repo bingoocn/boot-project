@@ -6,15 +6,15 @@ import org.springframework.web.bind.ServletRequestBindingException;
 import java.util.List;
 
 /**
- * 请求参数校验异常.
+ * 请求体数据属性校验异常.
  *
  * @author maxD
  */
-public class RequestParameterValidationException extends ServletRequestBindingException {
+public class RequestBodyValidationException extends ServletRequestBindingException {
 
     private List<FieldError> errors;
 
-    public RequestParameterValidationException(List<FieldError> errors) {
+    public RequestBodyValidationException(List<FieldError> errors) {
         super(null);
         this.errors = errors;
     }
