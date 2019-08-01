@@ -8,12 +8,15 @@ import lombok.Data;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.constraints.NotNull;
@@ -33,6 +36,12 @@ public class ServletExceptionHandler extends ResponseEntityExceptionHandler {
     @Autowired
     private CngcResourceBundleMessageSource cngcWebMessageSource;
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return handle(new RequestBodyValidationException(ex.getBindingResult().getFieldErrors()));
+    }
+
     /**
      * 处理操作资源不存在异常.
      *
@@ -40,7 +49,7 @@ public class ServletExceptionHandler extends ResponseEntityExceptionHandler {
      * @return 响应体
      */
     @ExceptionHandler(ResourceNotFoundException.class)
-    public ResponseEntity<ErrorMessage> notFoundHandle(ResourceNotFoundException e) {
+    public ResponseEntity<Object> notFoundHandle(ResourceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ErrorMessage(StringUtils.isEmpty(e.getMessage()) ?
                         cngcWebMessageSource.getMessage(WebMessageConstants.ERROR_RESOURCE_NOT_FOUND) : e.getMessage()));
@@ -54,7 +63,7 @@ public class ServletExceptionHandler extends ResponseEntityExceptionHandler {
      * TODO 处理error中的code与attribution
      */
     @ExceptionHandler(RequestBodyValidationException.class)
-    public ResponseEntity<RequestParameterErrorMessage> handle(RequestBodyValidationException exception) {
+    public ResponseEntity<Object> handle(RequestBodyValidationException exception) {
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY.value())
                 .body(new RequestParameterErrorMessage(cngcWebMessageSource.getMessage(
                         WebMessageConstants.ERROR_DEFAULT_PARAMETER_VALIDATION), exception.getFieldErrors()));
@@ -66,7 +75,7 @@ public class ServletExceptionHandler extends ResponseEntityExceptionHandler {
      * @return 响应体
      */
     @ExceptionHandler
-    public ResponseEntity<ErrorMessage> serverErrorHandle(Exception e) {
+    public ResponseEntity<Object> serverErrorHandle(Exception e) {
         logger.error(e.getMessage(), e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 new ErrorMessage(cngcWebMessageSource.getMessage(WebMessageConstants.ERROR_INTERNAL_SERVER)));
