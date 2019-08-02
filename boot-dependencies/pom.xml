@@ -37,12 +37,22 @@
             </dependency>
             <dependency>
                 <groupId>com.cngc.boot</groupId>
+                <artifactId>boot-starter-security</artifactId>
+                <version>${pversion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cngc.boot</groupId>
                 <artifactId>boot-basic-core</artifactId>
                 <version>${pversion}</version>
             </dependency>
             <dependency>
                 <groupId>com.cngc.boot</groupId>
                 <artifactId>boot-basic-web</artifactId>
+                <version>${pversion}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.cngc.boot</groupId>
+                <artifactId>boot-basic-security</artifactId>
                 <version>${pversion}</version>
             </dependency>
             <dependency>
