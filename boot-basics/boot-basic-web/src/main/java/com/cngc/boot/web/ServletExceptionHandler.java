@@ -104,11 +104,13 @@ public class ServletExceptionHandler extends ResponseEntityExceptionHandler {
                 this.code = error.getCode();
                 this.attribute = error.getField();
                 this.message = error.getDefaultMessage();
+                this.rejectedValue = error.getRejectedValue();
             }
 
             private String code;
             private String attribute;
             private String message;
+            private Object rejectedValue;
         }
     }
 
