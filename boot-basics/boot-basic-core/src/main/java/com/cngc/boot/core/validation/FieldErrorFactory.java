@@ -13,13 +13,13 @@ public class FieldErrorFactory {
     /**
      * 生成FieldError.
      *
-     * @param attribute 资源属性名
-     * @param code      错误编码
-     * @param message   错误消息
+     * @param attribute      资源属性名
+     * @param fieldErrorCode 错误编码枚举
+     * @param message        错误消息
      * @return FieldError对象
      */
-    public static FieldError createFieldError(String attribute, String code, String message) {
-        return createFieldError(null, attribute, code, message, null);
+    public static FieldError createFieldError(String attribute, FieldErrorCode fieldErrorCode, String message) {
+        return createFieldError(null, attribute, fieldErrorCode, message, null);
     }
 
     /**
@@ -27,25 +27,25 @@ public class FieldErrorFactory {
      *
      * @param resourceLocation 资源定位
      * @param attribute        资源属性名
-     * @param code             错误编码
+     * @param fieldErrorCode   错误编码枚举
      * @param message          错误消息
      * @return FieldError对象
      */
-    public static FieldError createFieldError(String resourceLocation, String attribute, String code, String message) {
-        return createFieldError(resourceLocation, attribute, code, message, null);
+    public static FieldError createFieldError(String resourceLocation, String attribute, FieldErrorCode fieldErrorCode, String message) {
+        return createFieldError(resourceLocation, attribute, fieldErrorCode, message, null);
     }
 
     /**
      * 生成FieldError.
      *
-     * @param attribute     资源属性名
-     * @param code          错误编码
-     * @param message       错误消息
-     * @param rejectedValue 错误属性的值
+     * @param attribute      资源属性名
+     * @param fieldErrorCode 错误编码枚举
+     * @param message        错误消息
+     * @param rejectedValue  错误属性的值
      * @return FieldError对象
      */
-    public static FieldError createFieldError(String attribute, String code, String message, Object rejectedValue) {
-        return createFieldError(null, attribute, code, message, rejectedValue);
+    public static FieldError createFieldError(String attribute, FieldErrorCode fieldErrorCode, String message, Object rejectedValue) {
+        return createFieldError(null, attribute, fieldErrorCode, message, rejectedValue);
     }
 
     /**
@@ -53,14 +53,14 @@ public class FieldErrorFactory {
      *
      * @param resourceLocation 资源定位
      * @param attribute        资源属性名
-     * @param code             错误编码
+     * @param fieldErrorCode   错误编码枚举
      * @param message          错误消息
      * @param rejectedValue    错误属性的值
      * @return FieldError对象
      */
-    public static FieldError createFieldError(String resourceLocation, String attribute, String code, String message, Object rejectedValue) {
+    public static FieldError createFieldError(String resourceLocation, String attribute, FieldErrorCode fieldErrorCode, String message, Object rejectedValue) {
         attribute = StringUtils.isEmpty(resourceLocation) ? attribute : ("[" + resourceLocation + "]." + attribute);
         return new FieldError("", attribute, rejectedValue, false,
-                new String[]{code}, null, message);
+                new String[]{fieldErrorCode.getCode()}, null, message);
     }
 }
