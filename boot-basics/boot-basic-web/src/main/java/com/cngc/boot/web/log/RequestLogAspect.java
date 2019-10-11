@@ -9,6 +9,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
@@ -31,6 +33,8 @@ import java.util.Optional;
 @Component
 @Aspect
 public class RequestLogAspect {
+
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     /**
      * 记录请求日志.
@@ -73,13 +77,18 @@ public class RequestLogAspect {
         logInfo.setMethod(request.getMethod());
 
         //TODO r1继承特有,抽离出来
-        Context context = Context.getInstance();
-        logInfo.setLoginAccount(context.getCurrentUserid());
-        logInfo.setUserName(context.getCurrentPerson().getFullName());
-        logInfo.setPersonId(context.getCurrentPersonUuid());
-        logInfo.setSysId(context.getCurrentSubsystemId());
-        logInfo.setSysName(context.getCurrentSubsystemName());
-        logInfo.setOrgName(((Organization) context.getCurrentOrganization().get(0)).getName());
+        try {
+            Context context = Context.getInstance();
+            logInfo.setLoginAccount(context.getCurrentUserid());
+            logInfo.setUserName(context.getCurrentPerson().getFullName());
+            logInfo.setPersonId(context.getCurrentPersonUuid());
+            logInfo.setSysId(context.getCurrentSubsystemId());
+            logInfo.setSysName(context.getCurrentSubsystemName());
+            logInfo.setOrgName(((Organization) context.getCurrentOrganization().get(0)).getName());
+        } catch(Exception e) {
+            logger.warn(e.getMessage(), e);
+        }
+
 
         Object retVal;
         try {
