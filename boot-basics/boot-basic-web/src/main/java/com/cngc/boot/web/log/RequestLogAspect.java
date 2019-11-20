@@ -11,9 +11,11 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -35,6 +37,9 @@ import java.util.Optional;
 public class RequestLogAspect {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    private KafkaTemplate kafkaTemplate;
 
     /**
      * 记录请求日志.
@@ -97,7 +102,7 @@ public class RequestLogAspect {
             logInfo.setState(RequestLogInfo.LogRequestState.FAIL);
             throw e;
         } finally {
-            System.out.println(new ObjectMapper().writeValueAsString(logInfo));
+            kafkaTemplate.send("request-log", new ObjectMapper().writeValueAsString(logInfo));
         }
         return retVal;
     }

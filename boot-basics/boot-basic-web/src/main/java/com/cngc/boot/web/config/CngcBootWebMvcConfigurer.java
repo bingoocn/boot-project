@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Import;
  * @author maxD
  */
 @Configuration
-@Import({ServletExceptionHandler.class, RequestLogAspect.class})
+@Import({ServletExceptionHandler.class})
 public class CngcBootWebMvcConfigurer {
 
     /**

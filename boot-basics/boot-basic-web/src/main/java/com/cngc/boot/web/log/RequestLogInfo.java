@@ -20,8 +20,6 @@ public class RequestLogInfo {
     private String referer;
     private Long requestTime;
     private String message;
-    private Object requestBody;
-
     private String sysName;
     private Integer sysId;
     private String personId;

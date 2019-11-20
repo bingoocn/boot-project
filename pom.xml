@@ -28,12 +28,12 @@
         <repository>
             <id>releases</id>
             <name>releases</name>
-            <url>http://10.100.48.128:8081/repository/maven-releases/</url>
+            <url>http://10.100.220.112:8081/repository/maven-releases/</url>
         </repository>
         <snapshotRepository>
             <id>snapshots</id>
             <name>snapshots</name>
-            <url>http://10.100.48.128:8081/repository/maven-snapshots/</url>
+            <url>http://10.100.220.112:8081/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 </project>
