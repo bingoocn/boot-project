@@ -11,8 +11,8 @@
     <artifactId>boot-integration-r1-portal</artifactId>
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <groupId>com.cngc.boot</groupId>
+            <artifactId>boot-basic-web</artifactId>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat</groupId>

@@ -1,10 +1,7 @@
 package com.cngc.boot.web.log;
 
 import com.cngc.boot.web.log.spel.LogEvaluationContext;
-import com.cngc.boot.web.util.WebUtils;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.icss.resourceone.sdk.framework.Context;
-import com.icss.resourceone.sdk.framework.Organization;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -41,6 +38,9 @@ public class RequestLogAspect {
     @Autowired
     private KafkaTemplate kafkaTemplate;
 
+    @Autowired
+    private RequestLogService requestLogService;
+
     /**
      * 记录请求日志.
      *
@@ -71,29 +71,7 @@ public class RequestLogAspect {
         HttpServletRequest request = sra.getRequest();
 
         // 处理日志内容.
-        RequestLogInfo logInfo = new RequestLogInfo();
-        logInfo.setMessage(message);
-        logInfo.setUri(request.getRequestURI());
-        logInfo.setQueryString(request.getQueryString());
-        logInfo.setClientIp(WebUtils.getClientIpAddress(request));
-        logInfo.setReferer(request.getHeader("referer"));
-        logInfo.setRequestTime(System.currentTimeMillis());
-        logInfo.setState(RequestLogInfo.LogRequestState.SUCCESS);
-        logInfo.setMethod(request.getMethod());
-
-        //TODO r1继承特有,抽离出来
-        try {
-            Context context = Context.getInstance();
-            logInfo.setLoginAccount(context.getCurrentUserid());
-            logInfo.setUserName(context.getCurrentPerson().getFullName());
-            logInfo.setPersonId(context.getCurrentPersonUuid());
-            logInfo.setSysId(context.getCurrentSubsystemId());
-            logInfo.setSysName(context.getCurrentSubsystemName());
-            logInfo.setOrgName(((Organization) context.getCurrentOrganization().get(0)).getName());
-        } catch(Exception e) {
-            logger.warn(e.getMessage(), e);
-        }
-
+        RequestLogInfo logInfo = requestLogService.extractRequestLog(message, request);
 
         Object retVal;
         try {

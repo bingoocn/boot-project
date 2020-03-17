@@ -10,9 +10,6 @@ import lombok.Data;
 @Data
 public class RequestLogInfo {
 
-    private String loginAccount;
-    private String userName;
-    private String orgName;
     private String clientIp;
     private String method;
     private String uri;
@@ -20,14 +17,19 @@ public class RequestLogInfo {
     private String referer;
     private Long requestTime;
     private String message;
-    private String sysName;
-    private Integer sysId;
-    private String personId;
     private LogRequestState state;
 
-
+    /**
+     * 请求结果.
+     */
     enum LogRequestState {
-        SUCCESS, FAIL;
+        // 成功
+        SUCCESS,
+        // 失败
+        FAIL
     }
 
+    protected void setState(LogRequestState state) {
+        this.state = state;
+    }
 }
