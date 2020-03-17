@@ -11,7 +11,7 @@
     <parent>
         <artifactId>boot-parent</artifactId>
         <groupId>com.cngc.boot</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0-RELEASE</version>
         <relativePath>../boot-parent</relativePath>
     </parent>
     <artifactId>boot-integrations</artifactId>
