@@ -76,6 +76,7 @@ public class RequestLogAspect {
         Object retVal;
         try {
             retVal = pjp.proceed();
+            logInfo.setState(RequestLogInfo.LogRequestState.SUCCESS);
         } catch (Exception e) {
             logInfo.setState(RequestLogInfo.LogRequestState.FAIL);
             throw e;
