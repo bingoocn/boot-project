@@ -34,7 +34,6 @@ public interface RequestLogService {
         logInfo.setClientIp(WebUtils.getClientIpAddress(request));
         logInfo.setReferer(request.getHeader("referer"));
         logInfo.setRequestTime(System.currentTimeMillis());
-        logInfo.setState(RequestLogInfo.LogRequestState.SUCCESS);
         logInfo.setMethod(request.getMethod());
     }
 }
