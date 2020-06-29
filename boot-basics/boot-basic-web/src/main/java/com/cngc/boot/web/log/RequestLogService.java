@@ -3,6 +3,7 @@ package com.cngc.boot.web.log;
 import com.cngc.boot.web.util.WebUtils;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
 
 /**
  * 请求日志相关服务接口.
@@ -16,9 +17,23 @@ public interface RequestLogService {
      *
      * @param message 请求描述
      * @param request 请求对象
+     * @param paramMap 请求参数Map
      * @return 日志信息
      */
-    RequestLogInfo extractRequestLog(String message, HttpServletRequest request);
+    default RequestLogInfo extractRequestLog(String message, HttpServletRequest request, HashMap<Object,Object> paramMap){
+        return this.extractRequestLog(message, request);
+    }
+
+    /**
+     * 提取请求日志信息.
+     *
+     * @param message 请求描述
+     * @param request 请求对象
+     * @return 日志信息
+     */
+    default RequestLogInfo extractRequestLog(String message, HttpServletRequest request){
+        return this.extractRequestLog(message, request, null);
+    }
 
     /**
      * 填充日志信息.

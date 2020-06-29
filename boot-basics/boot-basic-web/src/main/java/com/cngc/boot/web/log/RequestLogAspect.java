@@ -9,7 +9,9 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.core.env.Environment;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -18,6 +20,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,6 +43,9 @@ public class RequestLogAspect {
 
     @Autowired
     private RequestLogService requestLogService;
+
+    @Autowired
+    private Environment env;
 
     /**
      * 记录请求日志.
@@ -70,18 +76,37 @@ public class RequestLogAspect {
         ServletRequestAttributes sra = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
         HttpServletRequest request = sra.getRequest();
 
+        HashMap<Object, Object> paramMap = new HashMap<>();
+        Method method = signature.getMethod();
+        // 请求的方法参数值
+        Object[] args = pjp.getArgs();
+        // 请求的方法参数名称
+        LocalVariableTableParameterNameDiscoverer u = new LocalVariableTableParameterNameDiscoverer();
+        String[] paramNames = u.getParameterNames(method);
+        for (int i = 0; i < paramNames.length; i++) {
+            paramMap.put(paramNames[i], args[i]);
+        }
+
         // 处理日志内容.
-        RequestLogInfo logInfo = requestLogService.extractRequestLog(message, request);
+        RequestLogInfo logInfo = requestLogService.extractRequestLog(message, request, paramMap);
 
         Object retVal;
         try {
+            long beginTime = System.currentTimeMillis();
             retVal = pjp.proceed();
+            long elapsedTime = System.currentTimeMillis() - beginTime;
+            logInfo.setElapsedTime(elapsedTime);
             logInfo.setState(RequestLogInfo.LogRequestState.SUCCESS);
         } catch (Exception e) {
             logInfo.setState(RequestLogInfo.LogRequestState.FAIL);
             throw e;
         } finally {
-            kafkaTemplate.send("request-log", new ObjectMapper().writeValueAsString(logInfo));
+            String topic = env.getProperty("spring.kafka.topic");
+            if(null != topic) {
+                kafkaTemplate.send(env.getProperty("spring.kafka.topic"), new ObjectMapper().writeValueAsString(logInfo));
+            }else{
+                kafkaTemplate.send("request-log", new ObjectMapper().writeValueAsString(logInfo));
+            }
         }
         return retVal;
     }

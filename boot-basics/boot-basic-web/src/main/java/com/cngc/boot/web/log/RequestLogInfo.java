@@ -16,6 +16,7 @@ public class RequestLogInfo {
     private String queryString;
     private String referer;
     private Long requestTime;
+    private Long elapsedTime;
     private String message;
     private LogRequestState state;
 
