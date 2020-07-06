@@ -23,7 +23,7 @@ public class RequestLogInfo {
     /**
      * 请求结果.
      */
-    enum LogRequestState {
+    public enum LogRequestState {
         // 成功
         SUCCESS,
         // 失败

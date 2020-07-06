@@ -1,7 +1,6 @@
 package com.cngc.boot.web.log;
 
 import com.cngc.boot.web.log.spel.LogEvaluationContext;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,10 +10,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.LocalVariableTableParameterNameDiscoverer;
 import org.springframework.core.annotation.AnnotationUtils;
-import org.springframework.core.env.Environment;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -39,13 +36,10 @@ public class RequestLogAspect {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
-    private KafkaTemplate kafkaTemplate;
+    private RequestLogSend requestLogSend;
 
     @Autowired
     private RequestLogService requestLogService;
-
-    @Autowired
-    private Environment env;
 
     /**
      * 记录请求日志.
@@ -101,12 +95,7 @@ public class RequestLogAspect {
             logInfo.setState(RequestLogInfo.LogRequestState.FAIL);
             throw e;
         } finally {
-            String topic = env.getProperty("spring.kafka.topic");
-            if(null != topic) {
-                kafkaTemplate.send(env.getProperty("spring.kafka.topic"), new ObjectMapper().writeValueAsString(logInfo));
-            }else{
-                kafkaTemplate.send("request-log", new ObjectMapper().writeValueAsString(logInfo));
-            }
+            requestLogSend.send(logInfo);
         }
         return retVal;
     }

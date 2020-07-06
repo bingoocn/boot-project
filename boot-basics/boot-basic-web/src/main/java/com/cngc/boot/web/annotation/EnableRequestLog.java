@@ -1,6 +1,7 @@
 package com.cngc.boot.web.annotation;
 
 import com.cngc.boot.web.log.RequestLogAspect;
+import com.cngc.boot.web.log.RequestLogSentConfigurer;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.ElementType;
@@ -15,6 +16,6 @@ import java.lang.annotation.Target;
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@Import(RequestLogAspect.class)
+@Import({RequestLogAspect.class, RequestLogSentConfigurer.class})
 public @interface EnableRequestLog {
 }
