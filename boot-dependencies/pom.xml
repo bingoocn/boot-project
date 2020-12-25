@@ -17,6 +17,7 @@
         <pversion>1.2.0-SNAPSHOT</pversion>
         <mybatis.plus.boot.starter.version>3.1.2</mybatis.plus.boot.starter.version>
         <mybatis.spring.boot.starter.version>2.0.1</mybatis.spring.boot.starter.version>
+        <hutool.version>5.4.7</hutool.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -84,6 +85,11 @@
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.spring.boot.starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

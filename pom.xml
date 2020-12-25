@@ -22,7 +22,8 @@
         <module>boot-basics</module>
         <module>boot-parent</module>
         <module>boot-dependencies</module>
-        <module>boot-integrations</module>
+<!--        集成模块默认不进行编译,如需要请自行开启-->
+<!--        <module>boot-integrations</module>-->
     </modules>
     <distributionManagement>
         <repository>
