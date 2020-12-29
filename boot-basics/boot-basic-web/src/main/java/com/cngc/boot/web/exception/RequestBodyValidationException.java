@@ -10,12 +10,11 @@ import java.util.List;
  *
  * @author maxD
  */
-public class RequestBodyValidationException extends ServletRequestBindingException {
+public class RequestBodyValidationException extends RuntimeException {
 
     private List<FieldError> errors;
 
     public RequestBodyValidationException(List<FieldError> errors) {
-        super(null);
         this.errors = errors;
     }
 
