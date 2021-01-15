@@ -13,6 +13,10 @@ public enum FieldErrorCode {
     ALREADY_EXISTS("already_exists", "唯一性校验错误"),
     INVALID_FORMAT("invalid_format", "不符合规定的格式要求"),
     MISSING_RESOURCE("missing_resource", "属性值需要关联某一资源"),
+    /**
+     * 已废弃,请使用createCustomFieldError代替.
+     */
+    @Deprecated
     CUSTOM("custom", "自定义类型属性值错误");
 
     private String code;
