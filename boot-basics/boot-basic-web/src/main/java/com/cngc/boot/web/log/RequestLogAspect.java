@@ -1,5 +1,6 @@
 package com.cngc.boot.web.log;
 
+import com.cngc.boot.web.log.model.SecretAble;
 import com.cngc.boot.web.log.spel.LogEvaluationContext;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -40,6 +41,10 @@ public class RequestLogAspect {
 
     @Autowired
     private RequestLogService requestLogService;
+
+
+
+
 
     /**
      * 记录请求日志.
@@ -88,6 +93,12 @@ public class RequestLogAspect {
         try {
             long beginTime = System.currentTimeMillis();
             retVal = pjp.proceed();
+
+            if (retVal instanceof SecretAble){
+                SecretAble secret= (SecretAble) retVal;
+                String secretMsg = secret.getSecret();
+                logInfo.setMessage(logInfo.getMessage() + "(数据密级:" + secretMsg + "）");
+            }
             long elapsedTime = System.currentTimeMillis() - beginTime;
             logInfo.setElapsedTime(elapsedTime);
             logInfo.setState(RequestLogInfo.LogRequestState.SUCCESS);
