@@ -6,7 +6,7 @@
     <parent>
         <artifactId>boot-dependencies</artifactId>
         <groupId>com.cngc.boot</groupId>
-        <version>1.2.0-SNAPSHOT</version>
+        <version>1.3.0-SNAPSHOT</version>
         <relativePath>../../boot-dependencies</relativePath>
     </parent>
     <artifactId>boot-starter-parent</artifactId>
