@@ -2,6 +2,7 @@ package com.cngc.boot.security.authentication;
 
 import org.springframework.security.authentication.AbstractAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.Transient;
 
 import java.util.Collection;
 
@@ -10,6 +11,7 @@ import java.util.Collection;
  *
  * @author maxD
  */
+@Transient
 public class CngcAuthenticationToken extends AbstractAuthenticationToken {
     private Object principal;
     private Object credentials;

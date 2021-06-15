@@ -3,6 +3,7 @@ package com.cngc.boot.integration.gmp;
 import com.cngc.boot.security.authentication.CngcAuthenticationToken;
 import com.cngc.boot.security.authentication.LoginUser;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
@@ -34,10 +35,15 @@ public class CngcAuthenticationTokenConvertFilter extends OncePerRequestFilter {
                 .appCode(jwt.getAudience().get(0))
                 .build();
 
-        Authentication cngcAuthenticationToken = new CngcAuthenticationToken(loginUser,
+        CngcAuthenticationToken cngcAuthenticationToken = new CngcAuthenticationToken(loginUser,
                 authentication.getCredentials(), null);
         cngcAuthenticationToken.setAuthenticated(authentication.isAuthenticated());
-        SecurityContextHolder.getContext().setAuthentication(cngcAuthenticationToken);
+        cngcAuthenticationToken.setDetails(authentication.getDetails());
+
+        SecurityContext context = SecurityContextHolder.createEmptyContext();
+        context.setAuthentication(cngcAuthenticationToken);
+        SecurityContextHolder.setContext(context);
+
         filterChain.doFilter(request, response);
     }
 }
