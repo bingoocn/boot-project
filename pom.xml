@@ -6,7 +6,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.6.RELEASE</version>
+        <version>2.5.1</version>
     </parent>
     <groupId>com.cngc.boot</groupId>
     <artifactId>boot-project</artifactId>
@@ -22,8 +22,7 @@
         <module>boot-basics</module>
         <module>boot-parent</module>
         <module>boot-dependencies</module>
-<!--        集成模块默认不进行编译,如需要请自行开启-->
-<!--        <module>boot-integrations</module>-->
+        <module>boot-integrations</module>
     </modules>
     <distributionManagement>
         <repository>

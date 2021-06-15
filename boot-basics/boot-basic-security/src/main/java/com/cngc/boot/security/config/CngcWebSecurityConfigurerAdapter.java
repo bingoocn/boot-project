@@ -9,5 +9,5 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * @author maxD
  */
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class CngcWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
+public abstract class CngcWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 }
