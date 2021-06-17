@@ -21,18 +21,25 @@ public class DictTranslateSerializer extends JsonSerializer<String> implements C
      */
     private String type;
 
+    /**
+     * 字典转换注解对象.
+     */
+    private DictTranslator dictTranslator;
+
     DictTranslateSerializer() {
         super();
     }
-    DictTranslateSerializer(String type) {
+
+    DictTranslateSerializer(String type, DictTranslator dictTranslator) {
         this.type = type;
+        this.dictTranslator = dictTranslator;
     }
 
     @Override
     public void serialize(String value, JsonGenerator gen, SerializerProvider serializers) throws IOException {
         Dictionary dictionary = new Dictionary();
         dictionary.setCode(value);
-        dictionary.setName(DictTranslatorServiceProxy.getInstance().translateCodeToDisplayName(this.type, value));
+        dictionary.setName(DictTranslatorServiceProxy.getInstance().translateCodeToDisplayName(this.type, value, dictTranslator));
         gen.writeObject(dictionary);
     }
 
@@ -40,9 +47,9 @@ public class DictTranslateSerializer extends JsonSerializer<String> implements C
     public JsonSerializer<?> createContextual(SerializerProvider prov, BeanProperty property) throws JsonMappingException {
         DictTranslator dictTranslator = AnnotationUtils.synthesizeAnnotation(property.getAnnotation(DictTranslator.class), null);
         String type = dictTranslator.type();
-        if(StringUtils.isEmpty(type)) {
+        if (StringUtils.isEmpty(type)) {
             throw new JsonMappingException("未设置字典类型!");
         }
-        return new DictTranslateSerializer(type);
+        return new DictTranslateSerializer(type, dictTranslator);
     }
 }

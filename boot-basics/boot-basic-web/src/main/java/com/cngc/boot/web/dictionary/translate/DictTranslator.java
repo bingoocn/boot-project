@@ -48,14 +48,30 @@ public @interface DictTranslator {
 
     /**
      * 序列化时所用的keyname.
+     *
      * @return keyname
      */
     String serializeKeyName() default "";
 
     /**
      * 反序列化时所用的keyname.
+     *
      * @return keyname
      */
     String deSerializeKeyName() default "";
-    
+
+    /**
+     * 字典所属的应用的编码.
+     *
+     * @return 应用编码
+     */
+    String appCode() default "";
+
+    /**
+     * 是否是多层级字典.
+     *
+     * @return boolean
+     */
+    boolean isMultiLevel() default false;
+
 }
