@@ -18,6 +18,7 @@
         <mybatis.plus.boot.starter.version>3.1.2</mybatis.plus.boot.starter.version>
         <mybatis.spring.boot.starter.version>2.0.1</mybatis.spring.boot.starter.version>
         <hutool.version>5.4.7</hutool.version>
+        <gmp.version>0.4.0-SNAPSHOT</gmp.version>
     </properties>
     <dependencyManagement>
         <dependencies>
@@ -90,6 +91,11 @@
                 <groupId>cn.hutool</groupId>
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jeecgframework.boot</groupId>
+                <artifactId>jeecg-system-sdk-boot</artifactId>
+                <version>${gmp.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

@@ -35,7 +35,6 @@
         <dependency>
             <groupId>org.jeecgframework.boot</groupId>
             <artifactId>jeecg-system-sdk-boot</artifactId>
-            <version>0.2.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
 </project>
