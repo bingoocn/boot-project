@@ -34,9 +34,14 @@ public class IntegrationConfiguration {
             }
             @Override
             public String getUserOrgCode() {
-                //todo 获取当前登录用户的所属组织机构编码
                 LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-                return "A01";
+                return user.getOrgCode();
+            }
+
+            @Override
+            public String getAppCode() {
+                LoginUser user = (LoginUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+                return user.getAppCode();
             }
         };
     }

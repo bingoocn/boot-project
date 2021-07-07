@@ -33,6 +33,7 @@ public class CngcAuthenticationTokenConvertFilter extends OncePerRequestFilter {
         Jwt jwt = (Jwt) authentication.getPrincipal();
         LoginUser loginUser = LoginUser.withAccount(jwt.getSubject())
                 .appCode(jwt.getAudience().get(0))
+                .orgCode(jwt.getClaim("org_code"))
                 .build();
 
         CngcAuthenticationToken cngcAuthenticationToken = new CngcAuthenticationToken(loginUser,

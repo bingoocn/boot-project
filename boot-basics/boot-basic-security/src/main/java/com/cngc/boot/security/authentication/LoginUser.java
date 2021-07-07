@@ -17,6 +17,7 @@ public class LoginUser {
     private String account;
     private String appCode;
     private String userName;
+    private String orgCode;
 
     private LoginUser() {
 
@@ -33,6 +34,7 @@ public class LoginUser {
         private String account;
         private String appCode;
         private String userName;
+        private String orgCode;
 
         public Builder(String account) {
             this.account = account;
@@ -48,8 +50,13 @@ public class LoginUser {
             return this;
         }
 
+        public Builder orgCode(String orgCode) {
+            this.orgCode = orgCode;
+            return this;
+        }
+
         public LoginUser build() {
-            return new LoginUser(this.account, this.appCode, this.userName);
+            return new LoginUser(this.account, this.appCode, this.userName, this.orgCode);
         }
     }
 }
