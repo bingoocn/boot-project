@@ -13,6 +13,7 @@ public class RequestLogInfo {
     private String clientIp;
     private String method;
     private String uri;
+    private String requestMethod;
     private String queryString;
     private String referer;
     private Long requestTime;

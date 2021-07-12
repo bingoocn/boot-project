@@ -93,13 +93,17 @@ public class RequestLogAspect {
         try {
             long beginTime = System.currentTimeMillis();
             retVal = pjp.proceed();
-
+            long elapsedTime = System.currentTimeMillis() - beginTime;
             if (retVal instanceof SecretAble){
                 SecretAble secret= (SecretAble) retVal;
                 String secretMsg = secret.getSecret();
                 logInfo.setMessage(logInfo.getMessage() + "(数据密级:" + secretMsg + "）");
             }
-            long elapsedTime = System.currentTimeMillis() - beginTime;
+            //请求的方法名
+            String className = pjp.getTarget().getClass().getName();
+            String methodName = signature.getName();
+            logInfo.setRequestMethod(className + "." + methodName + "()");
+
             logInfo.setElapsedTime(elapsedTime);
             logInfo.setState(RequestLogInfo.LogRequestState.SUCCESS);
         } catch (Exception e) {
