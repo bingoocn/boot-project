@@ -1,6 +1,7 @@
 package com.cngc.boot.integration.gmp.config;
 
 import com.cngc.boot.integration.gmp.CngcAuthenticationTokenConvertFilter;
+import com.cngc.boot.integration.gmp.UrlTokenConverterFilter;
 import com.cngc.boot.security.config.CngcWebSecurityConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter;
@@ -14,6 +15,7 @@ public abstract class AbstractGmpWebSecurityConfigurerAdapter extends CngcWebSec
     @Override
     protected final void configure(HttpSecurity http) throws Exception {
         http.addFilterAfter(new CngcAuthenticationTokenConvertFilter(), BearerTokenAuthenticationFilter.class)
+                .addFilterBefore(new UrlTokenConverterFilter(), BearerTokenAuthenticationFilter.class)
                 .oauth2ResourceServer().jwt();
         configureExtend(http);
     }
