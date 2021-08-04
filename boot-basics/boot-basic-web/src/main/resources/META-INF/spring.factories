@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cngc.boot.web.autoconfigure.RequestLogAutoConfiguration,\
+  com.cngc.boot.web.autoconfigure.CngcWebAutoConfiguration

@@ -2,7 +2,6 @@ package com.cngc.boot.web.config;
 
 import com.cngc.boot.core.CngcResourceBundleMessageSource;
 import com.cngc.boot.web.ServletExceptionHandler;
-import com.cngc.boot.web.log.RequestLogAspect;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
